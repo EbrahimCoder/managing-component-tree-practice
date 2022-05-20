@@ -3,23 +3,16 @@ import ToDoItem from "./ToDoItem";
 import InputArea from "./InputArea";
 
 function App() {
-  const [inputText, setInputText] = useState("");
   const [items, setItems] = useState([]);
 
-  function handleChange(event) {
-    const newValue = event.target.value;
-    setInputText(newValue);
-  }
-
-  function addItem() {
-    setItems(prevItems => {
+  function addItem(inputText) {
+    setItems((prevItems) => {
       return [...prevItems, inputText];
     });
-    setInputText("");
   }
 
   function deleteItem(id) {
-    setItems(prevItems => {
+    setItems((prevItems) => {
       return prevItems.filter((item, index) => {
         return index !== id;
       });
@@ -31,7 +24,10 @@ function App() {
       <div className="heading">
         <h1>To-Do List</h1>
       </div>
-      <InputArea />
+      {/* Note how we pass a function as a prop to the InputArea component, 
+      so that it has a handle to use when there is a need to 
+      pass something that has a state back to the App (parent) component. */}
+      <InputArea onAddItem={addItem} />
       <div>
         <ul>
           {items.map((todoItem, index) => (
